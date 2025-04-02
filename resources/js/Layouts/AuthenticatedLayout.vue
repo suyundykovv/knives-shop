@@ -37,7 +37,7 @@ const showingNavigationDropdown = ref(false);
                                     :href="route('dashboard')"
                                     :active="route().current('dashboard')"
                                 >
-                                    Gay Ilya
+                                    dashboard
                                 </NavLink>
                             </div>
                         </div>
