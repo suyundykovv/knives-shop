@@ -11,20 +11,35 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Routing\Controller as BaseController;  // Импортируем правильный базовый класс
 
-class AdminController extends Controller
+class AdminController extends BaseController
 {
-    /**
-     * Display the admin dashboard.
-     */
-    public function dashboard(Request $request): Response
+    public function __construct()
     {
-        return Inertia::render('Admin/Dashboard', [
-            'status' => session('status'),
-            'users' => User::all(), // Retrieve all users
-        ]);
+        // Проверка на админа в конструкторе контроллера
+        $this->middleware('auth');  // Обязательно проверяем аутентификацию
     }
 
+    /**
+     * Показать админскую панель
+     */
+    public function dashboard(Request $request)
+    {
+        // Проверка, является ли пользователь администратором
+        if (!Auth::check() || !Auth::user()->is_admin) {
+            return redirect('/');  // Если не администратор, редирект
+        }
+
+        // Получаем всех пользователей для отображения в панели
+        $users = User::all();
+
+        // Возвращаем представление для администратора с данными пользователей
+        return Inertia::render('Admin/Dashboard', [
+            'users' => $users, // Список пользователей
+            'status' => session('status'), // Статус сессии
+        ]);
+    }
     /**
      * Display the admin's profile form.
      */
@@ -102,30 +117,37 @@ class AdminController extends Controller
     public function updateUserProfile(Request $request, $id): RedirectResponse
     {
         $user = User::findOrFail($id);
-        $user->fill($request->validated());
+
+        // Вручную валидируем поля
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'is_admin' => 'boolean',
+        ]);
+
+        // Заполняем и сохраняем пользователя
+        $user->fill($validated);
         $user->save();
 
-        return Redirect::route('admin.users.viewAll');
+        return Redirect::route('admin.dashboard')->with('status', 'User updated successfully!');
     }
 
     /**
      * Delete a user's account (admin-only).
      */
-    public function deleteUserAccount(Request $request, $id): RedirectResponse
+    public function deleteUserAccount($id): RedirectResponse
     {
-        $request->validate([
-            'password' => ['required', 'current_password'],
-        ]);
-
         $user = User::findOrFail($id);
 
-        // Prevent deleting the current admin account
-        if ($user->id === $request->user()->id) {
+        // Запрещаем удалять самого себя
+        if ($user->id === Auth::id()) {
             return Redirect::route('admin.dashboard')->withErrors('You cannot delete your own account.');
         }
 
         $user->delete();
 
-        return Redirect::route('admin.users.viewAll');
+        return Redirect::route('admin.dashboard')->with('status', 'User deleted successfully!');
     }
+
+
 }

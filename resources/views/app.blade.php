@@ -20,7 +20,7 @@
     <div class="container mx-auto flex justify-between">
         <a href="{{ route('register') }}" class="text-xl font-bold">MyApp</a>
         <ul class="flex space-x-4">
-            <li><a href="{{ route('register') }}">Home</a></li>
+            <li><a href="{{ route('dashboard') }}">Home</a></li>
             @auth
                 <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
                 @if(Auth::user()->is_admin)
