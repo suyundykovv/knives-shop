@@ -22,9 +22,10 @@
         <ul class="flex space-x-4">
             <li><a href="{{ route('dashboard') }}">Home</a></li>
             @auth
-                <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ route('knives.index') }}">Knives</a></li>
                 @if(Auth::user()->is_admin)
-                    <li><a href="{{ route('admin.dashboard') }}" class="text-red-400">Admin Panel</a></li>
+                    <li><a href="{{ route('admin.dashboard') }}" class="text-red-400">User Panel</a></li>
+                    <li><a href="{{ route('knives.index2') }}" class="text-blue-400">Knife Panel</a></li>
                 @endif
                 <li>
                     <form method="POST" action="{{ route('logout') }}">
@@ -39,7 +40,6 @@
         </ul>
     </div>
 </nav>
-
 @inertia
 </body>
 </html>
