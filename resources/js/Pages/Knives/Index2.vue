@@ -12,10 +12,6 @@ const loadKnives = () => {
 };
 
 onMounted(loadKnives);
-onMounted(() => {
-    console.log("usePage().props.knives:", usePage().props.knives);
-    knives.value = usePage().props.knives || [];
-});
 
 const addKnife = async () => {
     if (!validateKnife(newKnife.value)) return;
@@ -102,6 +98,7 @@ const resetNewKnife = () => {
                             <th class="border p-2">Name</th>
                             <th class="border p-2">Description</th>
                             <th class="border p-2">Price</th>
+                            <th class="border p-2">Image</th>
                             <th class="border p-2">Actions</th>
                         </tr>
                         </thead>
@@ -118,6 +115,10 @@ const resetNewKnife = () => {
                             <td class="border p-2">
                                 <input v-if="editingKnife && editingKnife.id === knife.id" v-model="editingKnife.price" type="number" class="border p-1" />
                                 <span v-else>{{ knife.price }}$</span>
+                            </td>
+                            <td class="border p-2">
+                                <input v-if="editingKnife && editingKnife.id === knife.id" v-model="editingKnife.image_url" class="border p-1 w-full" />
+                                <img v-else :src="knife.image_url" alt="Knife Image" class="w-16 h-16 object-cover rounded" />
                             </td>
                             <td class="border p-2">
                                 <button v-if="editingKnife && editingKnife.id === knife.id" @click="saveKnife" class="bg-green-500 text-white px-2 py-1 rounded">Save</button>

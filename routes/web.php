@@ -25,7 +25,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/admin/users', [AdminController::class, 'viewAllUsers'])->name('admin.users.viewAll');
     Route::get('/admin/users/{id}/edit', [AdminController::class, 'editUserProfile'])->name('admin.users.edit');
-    Route::post('/admin/users/{id}/update', [AdminController::class, 'updateUserProfile'])->name('admin.users.update');
+    Route::put('/admin/users/{id}/update', [AdminController::class, 'updateUserProfile'])->name('admin.users.update');
     Route::delete('/admin/users/{id}/delete', [AdminController::class, 'deleteUserAccount'])->name('admin.users.delete');
 });
 use App\Http\Controllers\KnifeController;
@@ -39,7 +39,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/knives', [KnifeController::class, 'store'])->name('knives.store'); // Only admin
     Route::get('/knives/{knife}/edit', [KnifeController::class, 'edit'])->name('knives.edit'); // Only admin
     Route::put('/knives/{knife}', [KnifeController::class, 'update'])->name('knives.update'); // Only admin
-    Route::delete('/knives/{knife}', [KnifeController::class, 'destroy'])->name('knives.destroy'); // Only admin
+    Route::delete('/knives/{id}', [KnifeController::class, 'destroy'])->name('knives.delete');
 });
 
 require __DIR__.'/auth.php';

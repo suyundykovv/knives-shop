@@ -56,8 +56,10 @@ class KnifeController extends BaseController
 
         $knife->save();
 
-        return redirect()->route('knives.index')->with('success', 'Knife added successfully.');
-    }
+        return Inertia::render('Knives/Index2', [
+            'knives' => Knife::all(),
+            'message' => 'Knife created successfully'
+        ]);    }
 
     public function update(Request $request, Knife $knife)
     {
@@ -76,8 +78,19 @@ class KnifeController extends BaseController
 
         $knife->save();
 
-        return redirect()->route('knives.index')->with('success', 'Knife updated successfully.');
-    }
+        return Inertia::render('Knives/Index2', [
+            'knives' => Knife::all(),
+            'message' => 'Knife updated successfully'
+        ]);    }
+    public function destroy($id)
+    {
+        $knife = Knife::findOrFail($id);
+        $knife->delete();
 
+        return Inertia::render('Knives/Index2', [
+            'knives' => Knife::all(),
+            'message' => 'Knife deleted successfully'
+        ]);
+    }
 }
 
