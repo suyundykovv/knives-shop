@@ -31,10 +31,9 @@ Route::get('/knives2', [KnifeController::class, 'index2'])->name('knives.index2'
 Route::get('/knives', [KnifeController::class, 'index'])->name('knives.index'); // View all knives
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/knives/create', [KnifeController::class, 'create'])->name('knives.create'); // Only admin
-    Route::post('/knives', [KnifeController::class, 'store'])->name('knives.store'); // Only admin
-    Route::get('/knives/{knife}/edit', [KnifeController::class, 'edit'])->name('knives.edit'); // Only admin
-    Route::put('/knives/{knife}', [KnifeController::class, 'update'])->name('knives.update'); // Only admin
+    Route::get('/knives', [KnifeController::class, 'index'])->name('knives.index');
+    Route::post('/knives', [KnifeController::class, 'store'])->name('knives.store');
+    Route::put('/knives/{knife}', [KnifeController::class, 'update'])->name('knives.update');
     Route::delete('/knives/{id}', [KnifeController::class, 'destroy'])->name('knives.delete');
 });
 use App\Http\Controllers\CartController;

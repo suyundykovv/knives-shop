@@ -45,49 +45,33 @@ class KnifeController extends BaseController
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
-            'image' => 'nullable|image|max:2048', // Ensure this is for the image upload
+            'image_url' => 'nullable|url', // Проверяем, что image_url - это URL
         ]);
 
-        $knife = new Knife($request->only(['name', 'description', 'price']));
+        Knife::create($request->only(['name', 'description', 'price', 'image_url']));
 
-        if ($request->hasFile('image')) {
-            $knife->image_url = $request->file('image')->store('knives', 'public'); // Use image_url here
-        }
-
-        $knife->save();
-
-        return Inertia::render('Knives/Index2', [
+        return Inertia::render('Knives/Index', [
             'knives' => Knife::all(),
             'message' => 'Knife created successfully'
-        ]);    }
+        ]);
+    }
 
     public function update(Request $request, Knife $knife)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric|min:0',
-            'image' => 'nullable|image|max:2048', // Ensure this is for the image upload
-        ]);
+        $knife->image_url = $request->image_url;
+        $knife->save(); // Принудительно сохраняем image_url
 
-        $knife->fill($request->only(['name', 'description', 'price']));
-
-        if ($request->hasFile('image')) {
-            $knife->image_url = $request->file('image')->store('knives', 'public'); // Use image_url here
-        }
-
-        $knife->save();
-
-        return Inertia::render('Knives/Index2', [
+        return Inertia::render('Knives/Index', [
             'knives' => Knife::all(),
             'message' => 'Knife updated successfully'
-        ]);    }
+        ]);
+    }
+
     public function destroy($id)
     {
-        $knife = Knife::findOrFail($id);
-        $knife->delete();
+        Knife::findOrFail($id)->delete();
 
-        return Inertia::render('Knives/Index2', [
+        return Inertia::render('Knives/Index', [
             'knives' => Knife::all(),
             'message' => 'Knife deleted successfully'
         ]);
