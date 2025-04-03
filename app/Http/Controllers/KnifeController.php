@@ -22,6 +22,12 @@ class KnifeController extends BaseController
             'knives' => Knife::all()
         ]);
     }
+    public function index2(): Response
+    {
+        return Inertia::render('Knives/Index2', [
+            'knives' => Knife::all()
+        ]);
+    }
 
 
     public function store(Request $request)
