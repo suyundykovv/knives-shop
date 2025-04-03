@@ -6,13 +6,14 @@ use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Illuminate\Routing\Controller as BaseController;
 
+
 class PaymentController extends BaseController
 {
     public function checkout(Request $request)
     {
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $items = $request->items; // Массив товаров из запроса
+        $items = $request->items;
 
         if (!$items || !is_array($items)) {
             return response()->json(['error' => 'Invalid cart data'], 400);
@@ -25,7 +26,7 @@ class PaymentController extends BaseController
                     'product_data' => [
                         'name' => $item['name'],
                     ],
-                    'unit_amount' => $item['price'] * 100, // Конвертация в центы
+                    'unit_amount' => $item['price'] * 100,
                 ],
                 'quantity' => 1,
             ];
@@ -42,14 +43,15 @@ class PaymentController extends BaseController
         return response()->json(['url' => $session->url]);
     }
 
+
     public function success()
     {
         return inertia('SuccessPage');
     }
+
 
     public function cancel()
     {
         return inertia('CancelPage');
     }
 }
-

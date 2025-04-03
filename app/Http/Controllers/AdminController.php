@@ -11,38 +11,29 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Routing\Controller as BaseController;  // Импортируем правильный базовый класс
+use Illuminate\Routing\Controller as BaseController;
+
 
 class AdminController extends BaseController
 {
     public function __construct()
     {
-        // Проверка на админа в конструкторе контроллера
-        $this->middleware('auth');  // Обязательно проверяем аутентификацию
+        $this->middleware('auth');
     }
 
-    /**
-     * Показать админскую панель
-     */
+
     public function dashboard(Request $request)
     {
-        // Проверка, является ли пользователь администратором
         if (!Auth::check() || !Auth::user()->is_admin) {
-            return redirect('/');  // Если не администратор, редирект
+            return redirect('/');
         }
 
-        // Получаем всех пользователей для отображения в панели
-        $users = User::all();
-
-        // Возвращаем представление для администратора с данными пользователей
         return Inertia::render('Admin/Dashboard', [
-            'users' => $users, // Список пользователей
-            'status' => session('status'), // Статус сессии
+            'users' => User::all(),
+            'status' => session('status'),
         ]);
     }
-    /**
-     * Display the admin's profile form.
-     */
+
     public function editProfile(Request $request): Response
     {
         return Inertia::render('Admin/Profile/Edit', [
@@ -51,14 +42,11 @@ class AdminController extends BaseController
         ]);
     }
 
-    /**
-     * Update the admin's profile information.
-     */
+
     public function updateProfile(AdminUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
 
-        // If the email has changed, invalidate the email verification status
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
@@ -68,9 +56,6 @@ class AdminController extends BaseController
         return Redirect::route('admin.profile.edit');
     }
 
-    /**
-     * Delete the admin's account.
-     */
     public function destroyAccount(Request $request): RedirectResponse
     {
         $request->validate([
@@ -78,9 +63,7 @@ class AdminController extends BaseController
         ]);
 
         $admin = $request->user();
-
         Auth::logout();
-
         $admin->delete();
 
         $request->session()->invalidate();
@@ -89,19 +72,15 @@ class AdminController extends BaseController
         return Redirect::to('/');
     }
 
-    /**
-     * View all users (admin-only).
-     */
+
     public function viewAllUsers(Request $request): Response
     {
         return Inertia::render('Admin/Users/Index', [
-            'users' => User::all(), // Retrieve all users
+            'users' => User::all(),
         ]);
     }
 
-    /**
-     * Show the form to edit a user's profile.
-     */
+
     public function editUserProfile($id): Response
     {
         $user = User::findOrFail($id);
@@ -111,35 +90,27 @@ class AdminController extends BaseController
         ]);
     }
 
-    /**
-     * Update a user's profile information (admin-only).
-     */
+
     public function updateUserProfile(Request $request, $id): RedirectResponse
     {
         $user = User::findOrFail($id);
 
-        // Вручную валидируем поля
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
             'is_admin' => 'boolean',
         ]);
 
-        // Заполняем и сохраняем пользователя
         $user->fill($validated);
         $user->save();
 
         return Redirect::route('admin.dashboard')->with('status', 'User updated successfully!');
     }
 
-    /**
-     * Delete a user's account (admin-only).
-     */
     public function deleteUserAccount($id): RedirectResponse
     {
         $user = User::findOrFail($id);
 
-        // Запрещаем удалять самого себя
         if ($user->id === Auth::id()) {
             return Redirect::route('admin.dashboard')->withErrors('You cannot delete your own account.');
         }
@@ -148,6 +119,4 @@ class AdminController extends BaseController
 
         return Redirect::route('admin.dashboard')->with('status', 'User deleted successfully!');
     }
-
-
 }

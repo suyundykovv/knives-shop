@@ -10,13 +10,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Routing\Controller as BaseController;  // Импортируем правильный базовый класс
+use Illuminate\Routing\Controller as BaseController;
+
 
 class ProfileController extends BaseController
 {
-    /**
-     * Display the user's profile form.
-     */
+
     public function edit(Request $request): Response
     {
         return Inertia::render('Profile/Edit', [
@@ -25,9 +24,7 @@ class ProfileController extends BaseController
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
+
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
@@ -41,9 +38,7 @@ class ProfileController extends BaseController
         return Redirect::route('profile.edit');
     }
 
-    /**
-     * Delete the user's account.
-     */
+
     public function destroy(Request $request): RedirectResponse
     {
         $request->validate([

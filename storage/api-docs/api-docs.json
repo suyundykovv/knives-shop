@@ -1,0 +1,693 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Knife Shop",
+        "description": "Документация API для управления ножами",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/admin/dashboard": {
+            "get": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Получить панель администратора",
+                "operationId": "7cfa73c7f4bc906c66043dac50a3d549",
+                "responses": {
+                    "200": {
+                        "description": "Страница админа"
+                    },
+                    "403": {
+                        "description": "Доступ запрещен"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/profile/edit": {
+            "get": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Просмотр формы редактирования профиля",
+                "operationId": "6fd54b3eb086b5a791127a54ab9cfa03",
+                "responses": {
+                    "200": {
+                        "description": "Страница редактирования профиля"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/profile/update": {
+            "put": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Обновить профиль администратора",
+                "operationId": "6364ac5c9dd15bb429e0d0b47489efa1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Admin"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "admin@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Профиль обновлен"
+                    },
+                    "422": {
+                        "description": "Ошибка валидации"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/profile/delete": {
+            "delete": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Удалить аккаунт администратора",
+                "operationId": "6bde5f07f3ad4e805c766caeb7fa9b0b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Аккаунт удален"
+                    },
+                    "403": {
+                        "description": "Ошибка аутентификации"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/users": {
+            "get": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Получить всех пользователей",
+                "operationId": "504fe2656846f96afa1873cdc342fec3",
+                "responses": {
+                    "200": {
+                        "description": "Список пользователей"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/users/{id}/edit": {
+            "get": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Редактировать профиль пользователя",
+                "operationId": "28a446bf08bbeba08231a23c76db55f3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID пользователя",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Форма редактирования профиля"
+                    },
+                    "404": {
+                        "description": "Пользователь не найден"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/admin/users/{id}": {
+            "put": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Обновить данные пользователя",
+                "operationId": "9b48336ade3a826a05e930cf4791e530",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID пользователя",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "User Name"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "user@example.com"
+                                    },
+                                    "is_admin": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Данные пользователя обновлены"
+                    },
+                    "422": {
+                        "description": "Ошибка валидации"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Удалить пользователя",
+                "operationId": "e15026d6c42618bc4610ddc6bd156e3b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID пользователя",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Пользователь удален"
+                    },
+                    "403": {
+                        "description": "Нельзя удалить самого себя"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/knives": {
+            "get": {
+                "tags": [
+                    "Knives"
+                ],
+                "summary": "Получить список всех ножей",
+                "operationId": "a4bd7e0ff6bbde3d71841846129aad6c",
+                "responses": {
+                    "200": {
+                        "description": "Список ножей",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Knife"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Knives"
+                ],
+                "summary": "Создать новый нож",
+                "operationId": "61176be9560e4e998eecf1d3e2d9ab36",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "price"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Hunting Knife"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Stainless steel blade"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "example": 99.99
+                                    },
+                                    "image_url": {
+                                        "type": "string",
+                                        "example": "http://example.com/knife.jpg"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Нож создан"
+                    },
+                    "400": {
+                        "description": "Ошибка валидации"
+                    }
+                }
+            }
+        },
+        "/api/knives/{id}": {
+            "put": {
+                "tags": [
+                    "Knives"
+                ],
+                "summary": "Обновить данные ножа",
+                "operationId": "85c571f9a0ec93f9ced7603d4252a759",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "image_url": {
+                                        "type": "string",
+                                        "example": "http://example.com/new_knife.jpg"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Нож обновлен"
+                    },
+                    "404": {
+                        "description": "Нож не найден"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Knives"
+                ],
+                "summary": "Удалить нож",
+                "operationId": "3cc2696a003fc3618f72f6ceea9eb613",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Нож удален"
+                    },
+                    "404": {
+                        "description": "Нож не найден"
+                    }
+                }
+            }
+        },
+        "/api/checkout": {
+            "post": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Создать сессию оплаты в Stripe",
+                "operationId": "9ffdb778be6dc285001105aeb7737bcf",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "items": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Knife Model X"
+                                                },
+                                                "price": {
+                                                    "type": "number",
+                                                    "example": 120
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "URL для оплаты"
+                    },
+                    "400": {
+                        "description": "Ошибка в данных"
+                    }
+                }
+            }
+        },
+        "/api/payment/success": {
+            "get": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Страница успешной оплаты",
+                "operationId": "316a026cd7be78c056c5a0e6738cb30a",
+                "responses": {
+                    "200": {
+                        "description": "Платеж успешно завершен"
+                    }
+                }
+            }
+        },
+        "/api/payment/cancel": {
+            "get": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Страница отмененной оплаты",
+                "operationId": "f6085ddde73f2b527960ae0d2d47bc0a",
+                "responses": {
+                    "200": {
+                        "description": "Платеж отменен"
+                    }
+                }
+            }
+        },
+        "/api/profile": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Получить профиль пользователя",
+                "operationId": "21d26f16795aefad77fc3cf09e8a7c65",
+                "responses": {
+                    "200": {
+                        "description": "Форма редактирования профиля"
+                    },
+                    "401": {
+                        "description": "Неавторизован"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Обновить профиль пользователя",
+                "operationId": "b927bf00923c712a27589c6a510ebbf5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Профиль обновлен"
+                    },
+                    "400": {
+                        "description": "Ошибка валидации"
+                    },
+                    "401": {
+                        "description": "Неавторизован"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Удалить аккаунт пользователя",
+                "operationId": "3c62733109c5499344671a2ac26a1507",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "password": {
+                                        "type": "string",
+                                        "example": "secret"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Аккаунт удален"
+                    },
+                    "401": {
+                        "description": "Неавторизован"
+                    },
+                    "403": {
+                        "description": "Неверный пароль"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Knife": {
+                "title": "Knife",
+                "description": "Модель ножа",
+                "required": [
+                    "id",
+                    "name",
+                    "price"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Karambit"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Красивый нож"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 199.99
+                    },
+                    "image_url": {
+                        "type": "string",
+                        "example": "https://example.com/knife.jpg"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "title": "User",
+                "description": "Модель пользователя",
+                "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "ID пользователя",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "Имя пользователя",
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "description": "Email пользователя",
+                        "type": "string",
+                        "format": "email",
+                        "example": "user@example.com"
+                    },
+                    "password": {
+                        "description": "Пароль пользователя (захешированный)",
+                        "type": "string",
+                        "example": "hashed_password"
+                    },
+                    "is_admin": {
+                        "description": "Флаг администратора",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "description": "Дата создания",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-04-03T12:34:56Z"
+                    },
+                    "updated_at": {
+                        "description": "Дата обновления",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-04-03T12:34:56Z"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Admin",
+            "description": "Административные операции"
+        },
+        {
+            "name": "Knives",
+            "description": "Операции с ножами"
+        },
+        {
+            "name": "Payments",
+            "description": "Операции с платежами"
+        },
+        {
+            "name": "Profile",
+            "description": "Операции с профилем пользователя"
+        }
+    ]
+}
