@@ -18,9 +18,9 @@
 <body class="font-sans antialiased">
 <nav class="bg-gray-800 p-4 text-white">
     <div class="container mx-auto flex justify-between">
-        <a href="{{ route('register') }}" class="text-xl font-bold">MyApp</a>
+        <a href="{{ route('register') }}" class="text-xl font-bold">Knife-Shop</a>
         <ul class="flex space-x-4">
-            <li><a href="{{ route('dashboard') }}">Home</a></li>
+            <li><a href="{{ route('profile.edit') }}">Profile</a></li>
             @auth
                 <li><a href="{{ route('knives.index') }}">Knives</a></li>
                 @if(Auth::user()->is_admin)
